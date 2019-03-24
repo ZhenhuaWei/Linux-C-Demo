@@ -1,0 +1,5 @@
+1. tcp_server_1.c与tcp_client_1.c是一个最基本的CS模型。
+只是处理简单的单连接，多连接或者server给指定client发送消息没有实现。
+
+2. tcp_server_2.c与tcp_client_2.c是一个多线程服务器，简单实现多连接。可以处理小批量的并发,server监听client发来的数据。
+
