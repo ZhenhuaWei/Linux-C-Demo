@@ -1,0 +1,3 @@
+udp服务器调用socket()，bind()，listen()完成套接字初始化后，调用accept()阻塞等待处于监听端口的状态。 
+udp客户端调用socket()初始化后，调用connect()发送SYN字段并阻塞等待应答。 
+客户端如果一直与服务端连接，服务端退出后重启时，端口号已被占用，和tcp一直，具有TIME_WAIT特性。 
