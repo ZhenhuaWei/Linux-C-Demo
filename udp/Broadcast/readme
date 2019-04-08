@@ -1,0 +1,4 @@
+1. gcc bacst_server.c -o bcast_server
+2. gcc bcast_client.c -o bcast_client
+3. 服务器运行：./bcast_server xxx.xxx.xxx.255 xxxx
+客户端需要运行在局域网中的不同机器上：./bcast_client xxx.xxx.xxx.255 xxxx
