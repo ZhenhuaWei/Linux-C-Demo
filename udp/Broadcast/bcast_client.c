@@ -28,18 +28,25 @@ int main(int argc,char *argv[])
 	}
 	printf("socketfd = %d\n",socketfd);
 
+	int i=1;
+	socklen_t len1 = sizeof(i);
+
+	//设置socket属性为可以复用端口，否则一台电脑只能绑定一次，测试时需要在同一个局域网内多台机器运行
+	setsockopt(socketfd,SOL_SOCKET,SO_REUSEADDR,&i,len1);
+	
 	memset(&bcast_client_addr,0,sizeof(bcast_client_addr));
 	bcast_client_addr.sin_family = AF_INET;
 	bcast_client_addr.sin_addr.s_addr = inet_addr(argv[1]);
 	bcast_client_addr.sin_port = htons(atoi(argv[2]));	
 	addr_len=sizeof(bcast_client_addr);
 
-	//绑定本机ip与端口 注意：本机只能绑定一次，测试时需要在通一个局域网内多台机器运行
-	if(bind(socketfd,(struct sockaddr*)&bcast_client_addr,addr_len) < 0)
+	//绑定本机ip与端口 
+ 	if(bind(socketfd,(struct sockaddr*)&bcast_client_addr,addr_len) < 0)
 	{
 		perror("bind");
 		exit(-1);
 	}
+	
 	char name[64];
 	size_t len = sizeof(name);
 	gethostname(name,len);
