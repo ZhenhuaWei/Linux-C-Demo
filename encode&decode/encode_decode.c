@@ -11,6 +11,8 @@
 unsigned char test_buf1[] = {0x68,0x18,0x0,0x83,0x0,0x0,0x40,0x0,0x0,0x49,0x3,0x1,0x0,0x54,0x48,0x31,0x30,0x21,0x8,0x19,0x10,0x32,0x91,0x16};
 unsigned char test_buf2[] = {0x68, 0x38 , 0x00 , 0xC3 , 0x00 , 0x00 , 0x40 , 0x00 , 0x00 , 0x00 , 0x03 , 0x02 , 0x01 , 0xF2 , 0x37 , 0x01 , 0x01 , 0x00 , 0x00 , 0x5A , 0x0A , 0x00 , 0xE8 , 0x03 , 0xE8 , 0x03 , 0x3C , 0x09 , 0x00 , 0x00 , 0x7E , 0x03 , 0x00 , 0xF7 , 0x03 , 0x00 , 0x00 , 0x30 , 0x12 , 0x13 , 0x30 , 0x12 , 0x13 , 0x54 , 0x48 , 0x31 , 0x30 , 0x21 , 0x08 , 0x19 , 0x10 , 0x32 , 0x00 , 0x00 , 0x59 , 0x16};
 
+unsigned char test_buf3[250];
+
 unsigned char result = 1;
 
 unsigned char encrypt(unsigned char buff, unsigned char key)
@@ -30,7 +32,7 @@ void test_case(unsigned char* test_buf, unsigned char buf_len, unsigned char key
     unsigned char change_buf[256];
 
     printf("========================================================\n");
-    printf("KEY:%d\n",key);
+    printf("KEY:%d data len:%d\n",key, buf_len);
     gettimeofday( &start, NULL );
     //printf("start : %d.%d\n", start.tv_sec, start.tv_usec);
     
@@ -98,14 +100,23 @@ int main(int arg, char *args[])
 	
 	dup2(oldfd,1);
     close(oldfd);
-  
+    
+    //相同KEY 不同数据
+    for(int j=0; j<100; j++)
+    {
+        for(int k=0; k<250; k++)
+        {
+            test_buf3[k] =  rand() % 250;
+        }
+        test_case(test_buf3, sizeof(test_buf3),KEY);
+    }
+    
+    //相同数据 不同KEY
     for(int i=1; i<=100; i++)
     {
         test_case(test_buf1, sizeof(test_buf1),KEY+i);
         test_case(test_buf2, sizeof(test_buf2),KEY+i);
     }
-    
-    
     
     if(result == 1)
     {
